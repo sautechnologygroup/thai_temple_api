@@ -20,7 +20,7 @@ class Introduction{
     // read all introduction
     public function getAllIntroduction(){
         // select all query
-        $query = "SELECT * FROM introduction_tb ORDER BY introId DESC";
+        $query = "SELECT * FROM introduction_tb";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
