@@ -1,32 +1,34 @@
 <?php
-class Temple {
+class Temple
+{
     private $conn;
-    
+
     public $templeId;
     public $templeName;
     public $templeAddress;
-    public $latitude;
-    public $longitude;
-    public $templeImage;
+    public $templeLatitude;
+    public $templeLongitude;
+    public $templeMainImage;
     public $templeDetail;
-    public $provinceId;
+    public $templeTell;
     public $districtId;
-    public $subdistrictId;
+    public $status;
+    public $verifiedBy;
+    public $verifiedDate;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
-    public function getAllTemples() {
+    public function getAllTemples()
+    {
         $query = "SELECT * FROM temple_tb";
-
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
         return $stmt;
     }
 
+
 }
-
-
-

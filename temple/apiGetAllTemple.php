@@ -15,6 +15,7 @@ $num = $stmt->rowCount();
 
 if ($num > 0) {
     $temple_arr = array();
+    $temple_arr["records"] = array();
 
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
@@ -23,16 +24,18 @@ if ($num > 0) {
             "templeId" => $templeId,
             "templeName" => $templeName,
             "templeAddress" => $templeAddress,
-            "latitude" => $latitude,
-            "longitude" => $longitude,
-            "templeImage" => $templeImage,
+            "templeLatitude" => $templeLatitude,
+            "templeLongitude" => $templeLongitude,
+            "templeMainImage" => $templeMainImage,
             "templeDetail" => $templeDetail,
-            "provinceId" => $provinceId,
+            "templeTell" => $templeTell,
             "districtId" => $districtId,
-            "subdistrictId" => $subdistrictId
+            "status" => $status,
+            "verifiedBy" => $verifiedBy,
+            "verifiedDate" => $verifiedDate
         );
 
-        array_push($temple_arr, $temple_item);
+        array_push($temple_arr["records"], $temple_item);
     }
 
     http_response_code(200);
@@ -40,6 +43,7 @@ if ($num > 0) {
 } else {
     http_response_code(404);
     echo json_encode(
-        array("message" => "No temple found.")
+        array("message" => "No temples found.")
     );
 }
+?>
