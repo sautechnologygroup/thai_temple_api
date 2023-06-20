@@ -43,4 +43,27 @@ class Temple
 
         return $stmt;
     }
+
+    public function getTempleDetail()
+    {
+        $query = "SELECT * FROM temple_tb WHERE templeId = :templeId";
+
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':templeId', $this->templeId);
+        $stmt->execute();
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $this->templeName = $row['templeName'];
+        $this->templeAddress = $row['templeAddress'];
+        $this->templeLatitude = $row['templeLatitude'];
+        $this->templeLongitude = $row['templeLongitude'];
+        $this->templeMainImage = $row['templeMainImage'];
+        $this->templeDetail = $row['templeDetail'];
+        $this->templeTell = $row['templeTell'];
+        $this->districtId = $row['districtId'];
+        $this->status = $row['status'];
+        $this->verifiedBy = $row['verifiedBy'];
+        $this->verifiedDate = $row['verifiedDate'];
+    }
 }
