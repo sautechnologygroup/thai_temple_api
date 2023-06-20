@@ -1,4 +1,5 @@
 <?php
+
 class Temple
 {
     private $conn;
@@ -21,14 +22,25 @@ class Temple
         $this->conn = $db;
     }
 
-    public function getAllTemples()
+    public function getTemplesWithinRadius($latitude, $longitude, $radius)
     {
-        $query = "SELECT * FROM temple_tb";
+        $query = "SELECT *, (6371 * 
+                    acos(cos(radians(:latitude)) *
+                    cos(radians(templeLatitude)) *
+                    cos(radians(templeLongitude) - radians(:longitude)) +
+                    sin(radians(:latitude)) *
+                    sin(radians(templeLatitude)))
+                ) AS distance
+                FROM temple_tb
+                HAVING distance <= :radius
+                ORDER BY distance ASC";
+
         $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':latitude', $latitude);
+        $stmt->bindParam(':longitude', $longitude);
+        $stmt->bindParam(':radius', $radius);
         $stmt->execute();
 
         return $stmt;
     }
-
-
 }

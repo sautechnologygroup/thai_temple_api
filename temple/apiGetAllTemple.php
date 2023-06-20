@@ -10,40 +10,19 @@ $db = $database->getConnectDB();
 
 $temple = new Temple($db);
 
-$stmt = $temple->getAllTemples();
-$num = $stmt->rowCount();
+// Retrieve user's location (latitude and longitude)
+$userLatitude = $_GET['userLatitude']; // Update with the parameter name you use to get the latitude
+$userLongitude = $_GET['userLongitude']; // Update with the parameter name you use to get the longitude
 
-if ($num > 0) {
-    $temple_arr = array();
-    $temple_arr["records"] = array();
+$stmt = $temple->getTemplesWithinRadius($userLatitude, $userLongitude, 20); // Change the radius value as needed
 
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        extract($row);
-
-        $temple_item = array(
-            "templeId" => $templeId,
-            "templeName" => $templeName,
-            "templeAddress" => $templeAddress,
-            "templeLatitude" => $templeLatitude,
-            "templeLongitude" => $templeLongitude,
-            "templeMainImage" => $templeMainImage,
-            "templeDetail" => $templeDetail,
-            "templeTell" => $templeTell,
-            "districtId" => $districtId,
-            "status" => $status,
-            "verifiedBy" => $verifiedBy,
-            "verifiedDate" => $verifiedDate
-        );
-
-        array_push($temple_arr["records"], $temple_item);
-    }
-
+if ($stmt->rowCount() > 0) {
+    $temple_arr = $stmt->fetchAll(PDO::FETCH_ASSOC);
     http_response_code(200);
     echo json_encode($temple_arr);
 } else {
     http_response_code(404);
-    echo json_encode(
-        array("message" => "No temples found.")
-    );
+    echo json_encode(array("message" => "No temples found."));
 }
+
 ?>
